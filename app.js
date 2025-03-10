@@ -5,11 +5,11 @@ const bodyParser = require('body-parser');
 const connectDB = require('./utils/database');
 require('dotenv').config();
 const UserRoutes = require("./routes/user");
+const postRoute = require('./routes/post');
 
 
 const app = express();
 connectDB();
-const postRoute = require('./routes/post');
 // const userRoute = require('./routes/user');
 
 
