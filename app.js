@@ -1,8 +1,11 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const UserRoutes = require("./routes/UserRouter");
 
 const app = express();
 app.use(express.json());
+
+app.use(UserRoutes);
 
 app.get("/", (req, res) => {
   console.log("backend is working");
