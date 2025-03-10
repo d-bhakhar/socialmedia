@@ -8,11 +8,13 @@ const postSchema = new Schema({
     },
     likes: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        default: []
     },
     dislikes: {
         type: Schema.Types.ObjectId,
-        ref: 'User'
+        ref: 'User',
+        default: []
     },
     comments: [
         {
@@ -24,7 +26,15 @@ const postSchema = new Schema({
                 type: String
             },
         }
-    ]
+    ],
+    likeCount: {
+        type: Number,
+        default: 0
+    },  // Numerical count
+    dislikeCount: {
+        type: Number,
+        default: 0
+    } // Numerical count
 });
 
 module.exports = mongoose.model('Post', postSchema);
