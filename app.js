@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const bodyParser = require('body-parser');
 const connectDB = require('./utils/database');
 require('dotenv').config();
+const UserRoutes = require("./routes/user");
+const connectDB = require("./utils/database");
 
 const app = express();
 connectDB();
@@ -15,6 +17,7 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use(postRoute); 
+app.use(UserRoutes);
 
 app.get("/", (req, res) => {
   console.log("backend is working");
