@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const connectDB = require('./utils/database');
 require('dotenv').config();
 const UserRoutes = require("./routes/user");
-const connectDB = require("./utils/database");
+
 
 const app = express();
 connectDB();
