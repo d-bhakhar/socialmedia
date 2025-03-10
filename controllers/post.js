@@ -25,9 +25,7 @@ exports.addPost = async (req, res, next) => {
 };
 
 exports.likePost = async (req, res, next) => {
-    Post.findById
 }
 
 exports.commentPost = (req, res, next) => {
-
 }
