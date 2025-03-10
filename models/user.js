@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { string } = require('yargs');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -8,8 +9,8 @@ const userSchema = new Schema({
         required: true,
     },
     name :{
-        typr: String,
-        required: true
+        type: String,
+        required: true,
     },
     email:{
         type: String,
@@ -21,8 +22,8 @@ const userSchema = new Schema({
         required: true
     },
     profilepicture :{
-        type : Image,
-        required: false
+        type : String,
+        required: false,
     },
     about:{
         type: String,
