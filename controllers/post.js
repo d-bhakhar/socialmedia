@@ -80,7 +80,7 @@ exports.likePost = async (req, res, next) => {
             if (action === 'like' || action === 'dislike') {
                 post.save();
                 console.log('updated post', post);
-                return res.redirect('/posts/' + postId); // Redirect to the post page
+                return res.redirect('/posts/' + postId); // exaple = '/posts/abc123'
             } else {
                 console.log('no action');
                 return res.redirect('/error');
@@ -91,5 +91,37 @@ exports.likePost = async (req, res, next) => {
         })
 }
 
-exports.commentPost = (req, res, next) => {
+exports.commentPost = async (req, res, next) => {
+    const postId = req.params.postId;
+    const userId = req.user.userId;
+    const comment = req.body.comments;
+
+    console.log(`coments: ${postId},${userId},${comment}`);
+
+    // const post = Post.findById(postId);
+    Post.findById(postId)
+        .then(post => {
+            if (!post) {
+                console.log('post not found');
+                return res.redirect('/error');
+            }
+
+            //create comment object
+            const commentObj = {
+                userId: userId,
+                comment: comment,
+                postId: postId,
+            };
+
+            //push this comments to post's array
+            post.comments.push(commentObj);
+            post.save();
+            console.log('comment added:', commentObj);
+            console.log('updated post:', post);
+
+            return res.redirect('/posts/' + postId);
+        })
+        .catch(err => {
+            console.log(err);
+        })
 }

@@ -2,7 +2,7 @@ const user = require("../models/user")
 
 exports.getUsers = (req, res) => {
     const user = user.findById(req.params.id);
-    res.json(user);
+    res.json(user); // also you can write res.send(user);
 };
 exports.createUser = (req, res) => {
   const user = new user({
