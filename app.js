@@ -1,10 +1,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const UserRoutes = require("./routes/user");
+const connectDB = require("./utils/database");
 
 const app = express();
 app.use(express.json());
-
 app.use(UserRoutes);
 
 app.get("/", (req, res) => {
