@@ -1,13 +1,26 @@
 const express = require("express");
+
 const mongoose = require("mongoose");
+const bodyParser = require('body-parser');
+const connectDB = require('./utils/database');
+require('dotenv').config();
 
 const app = express();
+connectDB();
+const postRoute = require('./routes/post');
+// const userRoute = require('./routes/user');
+
+
 app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(postRoute); 
 
 app.get("/", (req, res) => {
   console.log("backend is working");
 });
 
-app.listen(3000, () => {
-  console.log("Server is running on port 3000");
+const PORT = process.env.PORT;
+app.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
