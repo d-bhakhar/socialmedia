@@ -10,8 +10,6 @@ const postRoute = require('./routes/post');
 
 const app = express();
 connectDB();
-// const userRoute = require('./routes/user');
-
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
