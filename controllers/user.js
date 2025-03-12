@@ -1,4 +1,4 @@
-const user = require("../models/user");
+const user = require("../models/user").user;
 
 exports.getUsers = async (req, res, next) => {
   try {
@@ -42,7 +42,6 @@ exports.updateUser = async (req, res, next) => {
     const updatedprofilepicture = req.body.profilepicture;
     const updatedabout = req.body.about;
     const updatedcreated_at = req.body.created_at;
-    //.then((user)=>{}) can we write this ?
     user.name = updatedname;
     user.email = updatedemail;
     user.password = updatedpassword;
@@ -86,7 +85,7 @@ exports.follwersList = async (req, res, next) => {
       return res.status(404).json({ message: "you don't have any followers" });
     }
     const followers = await following.findById(req.params.id);
-    return res.json(followers);
+    return res.status(404).json(followers);
   } catch (error) {
     next(error);
   }

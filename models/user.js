@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { number } = require('yargs');
+const mongoose = require("mongoose");
+const { number } = require("yargs");
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -49,4 +49,4 @@ const userSchema = new Schema({
     defaultValue: 0,
   },
 });
-exports.module = mongoose.model('User',userSchema);
+exports.module = mongoose.model("User", userSchema);
