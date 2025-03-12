@@ -13,11 +13,18 @@ connectDB();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(postRoute);
+
+app.use('/api/posts',postRoute); 
 app.use("/users", UserRoutes);
+
 
 app.get("/", (req, res) => {
   console.log("backend is working");
+});
+
+app.use((err, req, res, next) => {
+  console.error("Error:", err.message);
+  res.status(500).json({ message: "Internal Server Error" });
 });
 
 const PORT = process.env.PORT;

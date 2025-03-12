@@ -3,10 +3,13 @@ const Post = require('../models/post');
 const post = require('../models/post');
 
 exports.addPost = async (req, res, next) => {
-    // const imgUrl = req.body.imgUrl;
+    const imgUrl = req.body.imgUrl;
     // const likes = req.body.likes;
     // const dislikes = req.body.dislikes;
     // const comments = req.body.comments;
+    if(!imgUrl) {
+        return res.status(400).json({message: 'ImgUrl is required'});
+    }
     const likes = req.body.likes !== undefined ? req.body.likes : 0;
     const dislikes = req.body.dislikes !== undefined ? req.body.dislikes : 0;
     const comments = req.body.comments !== undefined ? req.body.comments : [];
@@ -19,13 +22,30 @@ exports.addPost = async (req, res, next) => {
     });
     await post.save()
         .then(result => {
-            console.log('created post');
-            console.log(post);
+            console.log('created post', post);
+            // console.log(post);
         })
         .catch(error => {
             console.log(error);
         });
 };
+
+exports.deletePost = (req, res, next) => {
+    const postId = req.params.id;
+    Post.findByIdAndRemove(postId)
+        .then(result => {
+            if (!result) {
+                console.log('Post not found');
+                return res.status(404).redirect('/error');
+            } else {
+                console.log('post deleted', result);
+                return res.status(200).redirect('/posts');
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
 
 exports.likePost = async (req, res, next) => {
     const postId = req.params.postId;
@@ -44,7 +64,7 @@ exports.likePost = async (req, res, next) => {
             let liked = post.likes.includes(userId);
             let disliked = post.dislikes.includes(userId);
 
-            // handle the like action
+            // like action
             if (action === 'like') {
                 if (!liked) {
                     post.likes.push(userId); // Add user to likes
@@ -60,7 +80,7 @@ exports.likePost = async (req, res, next) => {
                 }
             }
 
-            //handle dislike action
+            // dislike action
             if (action === 'dislike') {
                 if (!disliked) {
                     post.dislikes.push(userId); // Add user to dislikes
@@ -120,6 +140,38 @@ exports.commentPost = async (req, res, next) => {
             console.log('updated post:', post);
 
             return res.redirect('/posts/' + postId);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}
+exports.editPosts = (req, res, next) => {
+    const postId = req.body.postId;
+    const updatedImgUrl = req.body.imgUrl;
+    const updatedLikes = req.body.likes;
+    const updatedDislikes = req.body.dislikes;
+    const updatedComments = req.body.comments;
+
+    console.log('edit request for postId:', postId);
+    console.log('updated posts data:', req.body);
+
+    Post.findById(postId)
+        .then(post => {
+            if (!post) {
+                console.log('post not found');
+                return res.redirect('/error');
+            }
+            // update post field
+            post.imgUrl = updatedImgUrl;
+            post.likes = updatedLikes !== undefined ? updatedLikes : post.likes;
+            post.dislikes = updatedDislikes;
+            post.comments = updatedComments;
+
+            return post.save();
+        })
+        .then(result => {
+            console.log('post updated:', result);
+            res.redirect('/posts');
         })
         .catch(err => {
             console.log(err);
