@@ -16,7 +16,7 @@ connectDB();
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use(postRoute); 
+app.use('/api/posts',postRoute); 
 app.use(UserRoutes);
 
 app.get("/", (req, res) => {

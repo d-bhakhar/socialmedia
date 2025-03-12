@@ -3,10 +3,13 @@ const Post = require('../models/post');
 const post = require('../models/post');
 
 exports.addPost = async (req, res, next) => {
-    // const imgUrl = req.body.imgUrl;
+    const imgUrl = req.body.imgUrl;
     // const likes = req.body.likes;
     // const dislikes = req.body.dislikes;
     // const comments = req.body.comments;
+    if(!imgUrl) {
+        return res.status(400).json({message: 'ImgUrl is required'});
+    }
     const likes = req.body.likes !== undefined ? req.body.likes : 0;
     const dislikes = req.body.dislikes !== undefined ? req.body.dislikes : 0;
     const comments = req.body.comments !== undefined ? req.body.comments : [];
@@ -160,7 +163,7 @@ exports.editPosts = (req, res, next) => {
             }
             // update post field
             post.imgUrl = updatedImgUrl;
-            post.likes = updatedLikes !== undefined ? updatedLikes : 0;
+            post.likes = updatedLikes !== undefined ? updatedLikes : post.likes;
             post.dislikes = updatedDislikes;
             post.comments = updatedComments;
 

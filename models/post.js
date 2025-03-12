@@ -6,16 +6,20 @@ const postSchema = new Schema({
         type: String,
         required: true
     },
-    likes: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        default: []
-    },
-    dislikes: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-        default: []
-    },
+    likes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            // default: []
+        }
+    ],
+    dislikes: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'User',
+            // default: []
+        }
+    ],
     comments: [
         {
             userId: {
