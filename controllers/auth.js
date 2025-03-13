@@ -16,6 +16,11 @@ exports.postSignup = async (req, res, next) => {
         const email = req.body.email;
         const password = req.body.password;
 
+        let existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: "User already exists." });
+        }
+
         const hashpassword = await bcrypt.hash(password, 10);
         console.log('user created now saving :', hashpassword);
 
@@ -51,41 +56,33 @@ exports.postSignup = async (req, res, next) => {
 //         console.log(err);
 //     })
 
-exports.postLogin = (req, res, next) => {
-    const email = req.body.email;
-    const password = req.body.password;
+exports.postLogin = async (req, res, next) => {
+    try {
+        const email = req.body.email;
+        const password = req.body.password;
 
-    User.findOne({
-        email: email,
-        password: password
-    })
-        .then(user => {
-            if (!user) {
-                console.log('user authentication failed !', user);
-                return res.ststus(401).redirect('/login');
-            }
+        const user = await User.findOne({
+            email: email,
+        });
+        if (!user) {
+            console.log('user authentication failed !', user);
+            return res.ststus(401).redirect('/login');
+        }
 
-
-            // const sessionId = uuidv4();
-            // setUser(sessionId, user);
-            // res.cookie('uid', sessionId);
-            const token = setUser(user);
-            res.cookie('token', token);
-
-            bcrypt.compare(password, user.password)
-                .then(match => {
-                    if (!match) {
-                        // console.log('user authentication failed !', user);
-                    }
-                })
-                .catch(err => {
-                    console.log(err);
-                })
-            console.log('user authentication sussessfull !', user);
-            return res.redirect('/');
-        })
-        .catch(err => {
-            console.log(err);
-        })
-
+        const match = await bcrypt.compare(password, user.password);
+        if (!match) {
+            // console.log('user authentication failed !', user);
+            return res.status(400).json({ message: "Invalid credentials." });
+        }
+        // const sessionId = uuidv4();
+        // setUser(sessionId, user);
+        // res.cookie('uid', sessionId);
+        const token = setUser(user);
+        res.cookie('token', token);
+    } catch (err) {
+        console.log(err);
+    }
+    console.log('user authentication sussessfull !', user);
+    return res.redirect('/');
 }
+
