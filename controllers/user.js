@@ -1,4 +1,4 @@
-const user = require("../models/user").user;
+const user = require("../models/user");
 
 exports.getUsers = async (req, res, next) => {
   try {
@@ -25,6 +25,7 @@ exports.createUser = async (req, res, next) => {
     });
     await user.save();
     return res.json("user created!", user);
+    console.log("user not found", user);
   } catch (error) {
     next(error);
   }
