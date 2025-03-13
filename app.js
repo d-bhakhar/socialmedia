@@ -3,7 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const connectDB = require("./utils/database");
-const cookieParser = require('cookie-parser');
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 const UserRoutes = require("./routes/user");
@@ -20,11 +20,9 @@ app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-
-app.use('/api/posts', postRoute);
-app.use("/users", authenticateToLogin, UserRoutes);
-app.use('/api/auth', authRoute);
-
+app.use("/api/posts", postRoute);
+app.use("/users", UserRoutes, authenticateToLogin);
+app.use("/api/auth", authRoute);
 
 app.get("/", (req, res) => {
   res.send("backend is working");

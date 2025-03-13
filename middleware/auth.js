@@ -1,14 +1,13 @@
-const { getUser } = require("../service/auth");
+const { getUser, setUser } = require("../service/auth");
 
 function authenticateToLogin(req, res, next) {
-  console.log("Middleware executed");
-
-  const userUid = req.cookies?.token;
+  const userUid = req.cookies?.token?._id;
   if (!userUid) {
     console.error("Access Denied! No token provided.");
-    return res.status(401).json({ message: "Access Denied! No token provided." });
+    return res
+      .status(401)
+      .json({ message: "Access Denied! No token provided." });
   }
-
   try {
     const user = getUser(userUid);
     if (!user) {
