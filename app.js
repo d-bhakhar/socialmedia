@@ -21,7 +21,7 @@ app.use(cookieParser());
 
 app.use('/api/posts',postRoute); 
 app.use("/users" ,authenticateToLogin, UserRoutes);
-app.use(authRoute);
+app.use('/api/auth',authRoute);
 
 
 app.get("/", (req, res) => {
