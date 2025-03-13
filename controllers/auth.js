@@ -13,22 +13,23 @@ const setUser = require('../service/auth').default;
 exports.postSignup = async (req, res, next) => {
     try {
         const name = req.body.name;
-        const email = req.body.email;
+        const mail = req.body.email;
         const password = req.body.password;
 
-        let existingUser = await User.findOne({ email });
+        let existingUser = await User.findOne({ email: mail });
+
         if (existingUser) {
             return res.status(400).json({ message: "User already exists." });
         }
 
         const hashpassword = await bcrypt.hash(password, 10);
-        console.log('user created now saving :', hashpassword);
-
-        const user = new user({
+        
+        const user = new User({
             name: name,
-            email: email,
+            email: mail,
             password: hashpassword
         });
+        console.log('user created now saving :', hashpassword);
         const result = await user.save();
         console.log('user saved !', result);
 
