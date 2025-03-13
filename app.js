@@ -9,23 +9,25 @@ require("dotenv").config();
 const UserRoutes = require("./routes/user");
 const postRoute = require("./routes/post");
 const authRoute = require("./routes/auth");
-const authenticateToLogin = require('./middleware/auth');
+const authenticateToLogin = require("./middleware/auth");
 
 const app = express();
 connectDB();
+
+// console.log("authRoute:", authRoute);
 
 app.use(express.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 
-app.use('/api/posts',postRoute); 
-app.use("/users" ,authenticateToLogin, UserRoutes);
-app.use('/api/auth',authRoute);
+app.use('/api/posts', postRoute);
+app.use("/api/users", authenticateToLogin, UserRoutes);
+app.use('/api/auth', authRoute);
 
 
 app.get("/", (req, res) => {
-  console.log("backend is working");
+  res.send("backend is working");
 });
 
 app.use((err, req, res, next) => {
