@@ -3,19 +3,25 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const connectDB = require("./utils/database");
+const cookieParser = require('cookie-parser');
 require("dotenv").config();
+
 const UserRoutes = require("./routes/user");
 const postRoute = require("./routes/post");
+const authRoute = require("./routes/auth");
+const authenticateToLogin = require('./middleware/auth');
 
 const app = express();
 connectDB();
 
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 
 app.use('/api/posts',postRoute); 
-app.use("/users", UserRoutes);
+app.use("/users" ,authenticateToLogin, UserRoutes);
+app.use(authRoute);
 
 
 app.get("/", (req, res) => {
