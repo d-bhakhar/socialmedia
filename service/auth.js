@@ -1,5 +1,6 @@
 const controller = require('../controllers/auth'); 
 // const sessionToUserMap = new Map();
+const jwt = require('jsonwebtoken');
 require("dotenv").config();
 // const secret = "Project#121@!";
 const secret = process.env.SCERET;
@@ -9,7 +10,7 @@ const secret = process.env.SCERET;
 // }
 
 function setUser(user) {
-    return sign({
+    return jwt.sign({
         _id: user._id,
         email: user.email
     },
@@ -27,13 +28,14 @@ function getUser(token) {
     if (!token) return null;
     try{
         // return jwt.verify(token, secret);
-        const decoded = verify(token, secret);
+        const decoded = jwt.verify(token, secret);
         return decoded;
     } catch (err) {
         console.error('jwt verification error:',err.message);
         return null;
     }
 }
+
 module.exports = {
     setUser,
     getUser
