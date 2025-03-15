@@ -6,7 +6,7 @@ const connectDB = require("./utils/database");
 const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
-const UserRoutes = require("./routes/user");
+const userRoutes = require("./routes/user");
 const postRoute = require("./routes/post");
 const authRoute = require("./routes/auth");
 const authenticateToLogin = require("./middleware/auth");
@@ -21,7 +21,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use("/api/posts", postRoute);
-app.use("/users", UserRoutes, authenticateToLogin);
+app.use("/api/users", authenticateToLogin, userRoutes);
 app.use("/api/auth", authRoute);
 
 app.get("/", (req, res) => {
