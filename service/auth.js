@@ -19,6 +19,7 @@ function setUser(user) {
             expiresIn: "1h"
         }
     );
+
 }
 // function getUser(id){
 //     return sessionToUserMap.get(id);
