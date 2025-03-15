@@ -27,12 +27,13 @@ function setUser(user) {
 
 function getUser(token) {
     if (!token) return null;
-    try{
-        // return jwt.verify(token, secret);
+    try {
+        console.log("Verifying token:", token);
         const decoded = jwt.verify(token, secret);
+        console.log("Decoded Token Data:", decoded);
         return decoded;
     } catch (err) {
-        console.error('jwt verification error:',err.message);
+        console.error("JWT verification error:", err.message);
         return null;
     }
 }
